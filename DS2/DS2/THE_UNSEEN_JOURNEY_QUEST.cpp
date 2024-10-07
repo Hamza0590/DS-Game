@@ -3,10 +3,7 @@
 #include <cstdlib>
 #include<chrono>
 #include<ctime>
-
 using namespace std;
-
-
 class node
 {
 public:
@@ -49,6 +46,8 @@ public:
     void print()
     {
         node* temp = head;
+        if (temp == NULL)
+            return;
         do
         {
             cout << '(' << temp->x << ',' << temp->y << ')';
@@ -114,43 +113,6 @@ public:
         }
     }
 
-    void printGrid(char levelName)
-    {
-        gridnode* rowStart = head;
-        clear();
-        if(levelName=='E')
-            mvprintw(0, 10, "EASY");
-        else if (levelName == 'M')
-            mvprintw(0, 14, "MEDIUM");
-        else if (levelName == 'H')
-            mvprintw(0, 14, "HARD");
-
-        int gridStartRow = 3;
-        for (int i = 0; i <= size + 1; i++) 
-        {
-            gridnode* temp = rowStart;
-            for (int j = 0; j <= size + 1; j++) {
-                if (i == 0 || i == size + 1 || j == 0 || j == size + 1) 
-                {
-
-                    mvaddch(gridStartRow+i, j * 2, '#');
-                }
-                else 
-                {
-                    mvaddch(i+gridStartRow, j * 2, temp->tile);
-                    if (temp) 
-                        temp = temp->right;  
-                }
-            }
-            if (i > 0 && i < size + 1)
-            {
-                rowStart = rowStart->down;
-            }
-        }
-
-        refresh();
-    }
-
     void updateTile(int x, int y, char newTile) {
         gridnode* rowStart = head;
         for (int i = 1; i <= x; i++) {
@@ -180,6 +142,8 @@ public:
     void door(int x, int y, char alpha)
     {
         gridnode* temp = head;
+        if (temp == NULL)
+            return;
         for (int i = 1; i <= x; i++)
         {
             temp = temp->down;
@@ -214,9 +178,95 @@ public:
             temp->tile = 'C';
         }
     }
-    gridnode* getHead()
+    void drawBomb(int pX, int pY, int kX, int kY, int dX, int dY , int level, list& coins , list& bomb)
     {
-        return head;
+        int bombX, bombY , n=0 , check;
+        if(level==1)
+            n = rand() % 3 + 2;
+        else if ( level==2)
+             n = rand() % 5 + 5;
+        else if (level==3)
+             n = rand() % 8 + 7;
+        for (int i = 0; i < n; i++)
+        {
+            gridnode* temp = head;
+            do
+            {
+                check = 0;
+                bombX = rand() % size, bombY = rand() % size;
+                node* temp2 = coins.head;
+                while (temp2 != NULL)
+                {
+                    if (temp2->x == bombX && temp2->y == bombY)
+                    {
+                        check = 1;
+                        break;
+                    }
+                    temp2 = temp2->next;
+                }
+            } while ((bombX == pX && bombY == pY) || (bombX == dX && bombY == dY) || (bombX == kX && bombY == kY) || check);
+            bomb.insetAtEnd(bombX, bombY);
+            for (int i = 1; i <= bombX; i++)
+            {
+                temp = temp->down;
+            }
+            for (int j = 1; j <= bombY; j++)
+            {
+                temp = temp->right;
+            }
+            temp->tile = 'B';
+        }
+    }
+    void printGrid(char levelName, int moves, int undo , int score , int hint , int keyCheck)
+    {
+        gridnode* rowStart = head;
+        clear();
+        if (levelName == 'E')
+            mvprintw(0, 10, "EASY");
+        else if (levelName == 'M')
+            mvprintw(0, 14, "MEDIUM");
+        else if (levelName == 'H')
+            mvprintw(0, 18, "HARD");
+        int gridStartRow = 2;
+        mvprintw(gridStartRow, 0, "Remaining moves: %d", moves);
+        mvprintw(gridStartRow, 22, "Remaining undos: %d", undo);
+        gridStartRow += 1;
+        mvprintw(gridStartRow, 0, "Score: %d", score);
+        if(hint==1)
+            mvprintw(gridStartRow, 22, "Hint: Moving Close");
+        else if (hint==0)
+            mvprintw(gridStartRow, 22, "Hint: Moving Away");
+        else
+            mvprintw(gridStartRow, 22, "Hint: To Be Decided");
+        gridStartRow += 1;
+        if(keyCheck)
+            mvprintw(gridStartRow, 0, "key Status: True");
+        else
+            mvprintw(gridStartRow, 0, "Key Status: False");
+        gridStartRow += 2;
+        for (int i = 0; i <= size + 1; i++)
+        {
+            gridnode* temp = rowStart;
+            for (int j = 0; j <= size + 1; j++) {
+                if (i == 0 || i == size + 1 || j == 0 || j == size + 1)
+                {
+
+                    mvaddch(gridStartRow + i, j * 2, '#');
+                }
+                else
+                {
+                    mvaddch(i + gridStartRow, j * 2, temp->tile);
+                    if (temp)
+                        temp = temp->right;
+                }
+            }
+            if (i > 0 && i < size + 1)
+            {
+                rowStart = rowStart->down;
+            }
+        }
+
+        refresh();
     }
 };
 class player
@@ -267,6 +317,108 @@ public:
         }
         return 0;
     }
+    int getMoves(int playerX, int playerY, int doorX, int doorY, int keyX , int keyY)
+    {
+        int moves=0;
+        if (playerX >= keyX)
+        {
+            moves += playerX - keyX;
+        }
+        else
+        {
+            moves += keyX - playerX;
+        }
+        if (playerY >= keyY)
+        {
+            moves += playerY - keyY;
+        }
+        else
+        {
+            moves += keyY - playerY;
+        }
+        if (keyX >= doorX)
+        {
+            moves += keyX - doorX;
+        }
+        else
+        {
+            moves += doorX - keyX;
+        }
+        if (keyY >= doorY)
+        {
+            moves += keyY - doorY;
+        }
+        else
+        {
+            moves += doorY - keyY;
+        }
+        return moves;
+    }
+    int getHint(int playerX, int playerY, int keyX, int keyY, int doorX, int doorY , int keyCheck , int &previous)
+    {
+        int check = 0;
+        if (keyCheck)
+        {
+            if (playerX >= doorX)
+            {
+                check += playerX - doorX;
+            }
+            else
+            {
+                check += doorX - playerX;
+            }
+            if (playerY >= doorY)
+            {
+                check += playerY - doorY;
+            }
+            else
+            {
+                check += doorY - playerY;
+            }
+        }
+        else
+        {
+            if (playerX >= keyX)
+            {
+                check += playerX - keyX;
+            }
+            else
+            {
+                check += keyX - playerX;
+            }
+            if (playerY >= keyY)
+            {
+                check += playerY - keyY;
+            }
+            else
+            {
+                check += keyY - playerY;
+            }
+        }
+        if (check < previous)
+        {
+            previous = check;
+            return 1;
+        }
+        else
+        {
+            previous = check;
+            return 0;
+        }
+    }
+    int checkBomb(int playerX, int playerY, list& bombs)
+    {
+        node* temp = bombs.head;
+        while (temp != NULL)
+        {
+            if (temp->x == playerX && temp->y == playerY)
+            {
+                return 1;
+            }
+            temp = temp->next;
+        }
+        return 0;
+    }
 };
 class delNode
 {
@@ -296,9 +448,9 @@ public:
 };
 int main() 
 {
-    int gridSize, undo = 0, level = 0;
+    int gridSize, undo = 0, level = 0 ,moves =0 , score=0;
     char levelName;
-    cout << "Select Difficulty Level:\n\t1- Easy\n\t2- Medium\n\t3- Hard";
+    cout << "Select Difficulty Level:\n1- Easy\n2- Medium\n3- Hard\nSelect: ";
     cin >> level;
     initscr();
     start_color();
@@ -310,18 +462,21 @@ int main()
     {
         gridSize = 10;
         undo = 6;
+        moves = 6;
         levelName = 'E';
     }
     else if (level == 2)
     {
         gridSize = 15;
         undo = 4;
+        moves = 2;
         levelName = 'M';
     }
     else if (level == 3)
     {
         gridSize = 20;
         undo = 1;
+        moves = 0;
         levelName = 'H';
     }
     int playerX = rand() % gridSize, playerY = rand() % gridSize;
@@ -342,17 +497,21 @@ int main()
     player p1(l1 , playerX , playerY , undo);
     l1.Key(keyX , keyY , 'K');
     l1.door(doorX, doorY, 'D');
-    list coins , savedCoins;
+    list coins , savedCoins , bombs;
     l1.drawCoins(playerX, playerY, keyX, keyY, doorX, doorY , coins);
-    l1.printGrid(levelName);
+    l1.drawBomb(playerX, playerY, keyX, keyY, doorX, keyY, level, coins, bombs);
+    moves += p1.getMoves(playerX, playerY, doorX, doorY , keyX, keyY);
+    l1.printGrid(levelName , moves , undo , score , 3 , getKey);
 
     delNode d1;
     
     int leftCheck = 1, rightCheck = 1, upCheck = 1, downCheck = 1;
     auto lastUpdate = std::chrono::steady_clock::now();
-    int coinInterval = 5;
+    int coinInterval = 10, previous;
+    p1.getHint(playerX, playerY, keyX, keyY, doorX, doorY, getKey, previous);
     while (true)
     {
+        moves -= 1;
         int a = getch();
         l1.door(doorX, doorY, 'D');
         auto now = std::chrono::steady_clock::now();
@@ -375,7 +534,8 @@ int main()
                 playerX -= 1;
                 l1.updateTile(playerX , playerY, 'P');
                 playerPreX = playerX;
-                l1.printGrid(levelName);
+                int awayorClose = p1.getHint(playerX, playerY, keyX, keyY, doorX, doorY, getKey, previous);
+                l1.printGrid(levelName , moves , undo , score , awayorClose , getKey);
             }
         }
         else if (a == KEY_DOWN && downCheck)
@@ -390,7 +550,8 @@ int main()
                 playerX += 1;
                 l1.updateTile(playerX , playerY , 'P');
                 playerPreX = playerX;
-                l1.printGrid(levelName);
+                int awayorClose = p1.getHint(playerX, playerY, keyX, keyY, doorX, doorY, getKey, previous);
+                l1.printGrid(levelName , moves , undo, score , awayorClose , getKey);
             }
         }
         else if (a == KEY_LEFT && leftCheck)
@@ -405,7 +566,8 @@ int main()
                 playerY -= 1;
                 l1.updateTile(playerX, playerY, 'P');
                 playerPreY = playerY;
-                l1.printGrid(levelName);
+                int awayorClose = p1.getHint(playerX, playerY, keyX, keyY, doorX, doorY, getKey, previous);
+                l1.printGrid(levelName , moves , undo , score , awayorClose , getKey);
             }
         }
         else if (a == KEY_RIGHT && rightCheck)
@@ -420,7 +582,8 @@ int main()
                 playerY += 1;
                 l1.updateTile(playerX, playerY, 'P');
                 playerPreY = playerY;
-                l1.printGrid(levelName);
+                int awayorClose = p1.getHint(playerX, playerY, keyX, keyY, doorX, doorY, getKey, previous);
+                l1.printGrid(levelName , moves , undo , score , awayorClose , getKey);
             }
         }
         if (p1.checkKey(playerX, playerY, keyX, keyY))
@@ -436,6 +599,15 @@ int main()
         if (p1.checkCoin(playerX, playerY, coins, savedCoins))
         {
             undo += 1;
+            score += 2;
+        }
+        if (moves <= 0)
+        {
+            break;
+        }
+        if (p1.checkBomb(playerX, playerY, bombs))
+        {
+            break;
         }
     }
     savedCoins.print();
