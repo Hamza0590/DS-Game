@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 using namespace std;
 class node
@@ -42,33 +43,13 @@ public:
     void print()
     {
         node* temp = head;
+        if (temp == NULL)
+            return;
         do
         {
             cout << '(' << temp->x << ',' << temp->y << ')';
             temp = temp->next;
         } while (temp != NULL);
     }
-    /*void deleteNodes(gridlist l1)
-    {
-        node* temp;
-        temp = head;
-        while (temp != NULL)
-        {
-            node* curr = temp;
-            gridnode* traverseforDeletion = l1.head;
-            for (int i = 1; i <= curr->x; i++)
-            {
-                traverseforDeletion = traverseforDeletion->down;
-            }
-            for (int j = 1; j <= curr->y; j++)
-            {
-                traverseforDeletion = traverseforDeletion->right;
-            }
-            traverseforDeletion->coin = '.';
-            temp = temp->next;
-            delete curr;
-        }
-        head = NULL;
-    }*/
 
 };

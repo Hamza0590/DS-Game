@@ -26,5 +26,14 @@
     <ClInclude Include="1D_List.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="delNodes.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UndoStack.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

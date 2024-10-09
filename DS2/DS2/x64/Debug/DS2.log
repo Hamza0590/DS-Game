@@ -1,3 +1,3 @@
 ﻿  THE_UNSEEN_JOURNEY_QUEST.cpp
-D:\DS-Game\DS2\DS2\THE_UNSEEN_JOURNEY_QUEST.cpp(459,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\DS-Game\DS2\DS2\THE_UNSEEN_JOURNEY_QUEST.cpp(24,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   DS2.vcxproj -> D:\DS-Game\DS2\x64\Debug\DS2.exe

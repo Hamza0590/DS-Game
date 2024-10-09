@@ -137,7 +137,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="1D_List.h" />
+    <ClInclude Include="delNodes.h" />
     <ClInclude Include="multi_Dim_list.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="UndoStack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
