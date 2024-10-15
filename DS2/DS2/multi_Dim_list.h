@@ -3,16 +3,17 @@
 #include<cstdlib>
 #include<curses.h>
 #include"1D_List.h"
+//#include"player.h"
 using namespace std;
 
 class gridnode {
 public:
     gridnode* up, * down, * right, * left;
-    char tile, bomb, coin, key, door;
+    char tile;
 
     gridnode() {
         up = down = right = left = NULL;
-        tile = bomb = coin = key = door = '.';
+        tile = '.';
     }
 };
 
@@ -20,13 +21,16 @@ class gridlist {
 
 public:
     gridnode* head, * curr;
-    int size;
+    int size , doorX , doorY , keyX , keyY;
+    char level;
     gridlist() {
         head = curr = NULL;
+        size = doorX = doorY = keyX = keyY =0;
+        level = '\0';
     }
-
-    void makeGrid(int n) {
+    void makeGrid(int n , char lev) {
         size = n;
+        level = lev;
         gridnode* upper = head;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -63,50 +67,75 @@ public:
         }
         curr = head;
     }
-
-    void updateTile(int x, int y, char newTile) {
+    void checkGrid(int x, int y)
+    {
+        gridnode*  temp = head;
+        for (int i = 1; i <=x ; i++)
+        {
+            temp = temp->down;
+        }
+        for (int i = 1; i <=y ; i++)
+        {
+            temp = temp->right;
+        }
+        if (temp->right != NULL)
+            cout << "R: T" <<  endl;
+        if (temp->left != NULL)
+            cout << "L: T"  << endl;
+        if (temp->up != NULL)
+            cout << "UP: T"  << endl;
+        if (temp->down != NULL)
+            cout << "D: T"  << endl;
+    }
+    void checkPrint()
+    {
         gridnode* rowStart = head;
-        for (int i = 1; i <= x; i++) {
-            rowStart = rowStart->down;
+        for (int i = 0; i <= size + 1; i++)
+        {
+            gridnode* temp = rowStart;
+            for (int j = 0; j <= size + 1; j++) {
+                if (i == 0 || i == size + 1 || j == 0 || j == size + 1)
+                {
+
+                    cout<<'#'<<' ';
+                }
+                else
+                {
+                    cout << temp->tile << ' ';
+                    if (temp)
+                        temp = temp->right;
+                }
+            }
+            cout << endl;
+            if (i > 0 && i < size + 1)
+            {
+                rowStart = rowStart->down;
+            }
+        }
+    }
+    void updateTile(int x, int y, char newTile) {
+        gridnode* temp = head;
+        for (int i = 0; i < x; i++) {
+            temp = temp->down;
         }
 
-        gridnode* temp = rowStart;
-        for (int j = 1; j <= y; j++) {
+       
+        for (int j = 0; j < y; j++) {
             temp = temp->right;
         }
         temp->tile = newTile;
     }
-    void Key(int x, int y, char alpha)
+    void setDoorCor(int x, int y)
     {
-        gridnode* temp = head;
-        for (int i = 1; i <= x; i++)
-        {
-            temp = temp->down;
-        }
-        for (int j = 1; j <= y; j++)
-        {
-            temp = temp->right;
-        }
-        temp->key = alpha;
-        temp->tile = alpha;
+        doorX = x;
+        doorY = y;
     }
-    void door(int x, int y, char alpha)
+    void setKeyCor(int x, int y)
     {
-        gridnode* temp = head;
-        if (temp == NULL)
-            return;
-        for (int i = 1; i <= x; i++)
-        {
-            temp = temp->down;
-        }
-        for (int j = 1; j <= y; j++)
-        {
-            temp = temp->right;
-        }
-        temp->door = alpha;
-        temp->tile = alpha;
+        keyX = x;
+        keyY = y;
     }
-    void drawCoins(int pX, int pY, int kX, int kY, int dX, int dY, int level , list& coins)
+    void drawCoins(int pX, int pY,  int level , list& coins)
     {
         int coinX, coinY  , n;
         if (level == 1)
@@ -121,7 +150,7 @@ public:
             do
             {
                 coinX = rand() % size, coinY = rand() % size;
-            } while ((coinX == pX && coinY == pY) || (coinX == dX && coinY == dY) || (coinX == kX && coinY == kY));
+            } while ((coinX == pX && coinY == pY) || (coinX == doorX && coinY == doorY) || (coinX == keyX && coinY == keyY));
             coins.insetAtEnd(coinX, coinY);
             for (int i = 1; i <= coinX; i++)
             {
@@ -134,7 +163,7 @@ public:
             temp->tile = 'C';
         }
     }
-    void drawBomb(int pX, int pY, int kX, int kY, int dX, int dY, int level, list& coins, list& bomb)
+    void drawBomb(int pX, int pY, int level, list& coins, list& bomb)
     {
         int bombX, bombY, n = 0, check;
         if (level == 1)
@@ -160,7 +189,7 @@ public:
                     }
                     temp2 = temp2->next;
                 }
-            } while ((bombX == pX && bombY == pY) || (bombX == dX && bombY == dY) || (bombX == kX && bombY == kY) || check);
+            } while ((bombX == pX && bombY == pY) || (bombX == doorX && bombY == doorY) || (bombX == keyX && bombY == keyY) || check);
             bomb.insetAtEnd(bombX, bombY);
             for (int i = 1; i <= bombX; i++)
             {
@@ -173,16 +202,16 @@ public:
             temp->tile = 'B';
         }
     }
-    void printGrid(char levelName, int moves, int undo, int score, int hint, int keyCheck , int stackX , int stackY)
+    void printGrid(int moves, int undo, int score, int hint, int keyCheck , int stackX , int stackY)
     {
         gridnode* rowStart = head;
         clear();
-        if (levelName == 'E')
-            mvprintw(0, 10, "EASY");
-        else if (levelName == 'M')
-            mvprintw(0, 14, "MEDIUM");
-        else if (levelName == 'H')
-            mvprintw(0, 18, "HARD");
+        if (level == 'E')
+            mvprintw(0, 4, "Mode: EASY");
+        else if (level == 'M')
+            mvprintw(0, 8, "Mode: MEDIUM");
+        else if (level == 'H')
+            mvprintw(0, 12, "Mode: HARD");
         int gridStartRow = 2;
         mvprintw(gridStartRow, 0, "Remaining moves: %d", moves);
         mvprintw(gridStartRow, 22, "Remaining undos: %d", undo);
@@ -239,9 +268,100 @@ public:
                 rowStart = rowStart->down;
             }
         }
-        gridStartRow += 17;
-        mvprintw(gridStartRow, 0, "x", stackX );
-        mvprintw(gridStartRow+1, 0, "y", stackY);
         refresh();
     }
+    void printEndDisplay(int playerInitialX, int playerInitialY, int pX, int pY,  int score, list recentCoins, list initialCoins, list  savedCoins)
+    {
+
+        clear();
+        int moveForward = 0, gridStartRow = 0;
+        node* coinPrint = savedCoins.head;
+        if (level == 'E')
+            mvprintw(gridStartRow, 4, "Mode: EASY");
+        else if (level == 'M')
+            mvprintw(gridStartRow, 8, "Mode: MEDIUM");
+        else if (level == 'H')
+            mvprintw(gridStartRow, 12, "Mode: HARD");
+        gridStartRow += 3;
+        mvprintw(gridStartRow, moveForward, "Collected Coins: ");
+        moveForward += 17;
+        while (coinPrint != NULL)
+        {
+            int x = coinPrint->getX(), y = coinPrint->getY();
+            mvprintw(gridStartRow, moveForward, "(%d", x);
+            mvprintw(gridStartRow, moveForward + 2, ",%d", y);
+            mvprintw(gridStartRow, moveForward + 4, ")");
+            moveForward += 5;
+            coinPrint = coinPrint->next;
+        }
+        gridStartRow += 1;
+        mvprintw(gridStartRow, 0, "Score: %d", score);
+        gridStartRow += 2;
+        mvprintw(gridStartRow, 0, "This was the initial state of the game.");
+        gridStartRow += 1;
+        
+        updateTile(pX, pY, '.');
+        updateTile(playerInitialX, playerInitialY, 'P');
+        updateTile(doorX, doorY, 'D');
+        updateTile(keyX, keyY, 'K');
+        node* temp = recentCoins.head;
+        node* coinNode = initialCoins.head;
+        
+        while (coinNode != NULL)
+        {
+                updateTile(coinNode->getX(), coinNode->getY(), 'C');
+                coinNode = coinNode->next;
+        }
+        coinNode = initialCoins.head;
+        if (coinNode != NULL)
+        {
+            while (temp != NULL)
+            {
+                updateTile(temp->getX(), temp->getY(), '.');
+                temp = temp->next;
+            }
+        }
+        gridnode* rowStart = head;
+        for (int i = 0; i <= size + 1; i++)
+        {
+            gridnode* temp = rowStart;
+            for (int j = 0; j <= size + 1; j++) {
+                if (i == 0 || i == size + 1 || j == 0 || j == size + 1)
+                {
+
+                    mvaddch(gridStartRow + i, j * 2, '#');
+                }
+                else
+                {
+                    init_pair(1, COLOR_GREEN, COLOR_BLACK);
+                    init_pair(2, COLOR_RED, COLOR_BLACK);
+                    init_pair(3, COLOR_BLUE, COLOR_BLACK);
+                    if (temp->tile == 'P')
+                    {
+                        attron(COLOR_PAIR(1));
+                    }
+                    if (temp->tile == 'B')
+                    {
+                        attron(COLOR_PAIR(2));
+                    }
+                    if (temp->tile == 'C')
+                    {
+                        attron(COLOR_PAIR(3));
+                    }
+                    mvaddch(i + gridStartRow, j * 2, temp->tile);
+                    attroff(COLOR_PAIR(1));
+                    attroff(COLOR_PAIR(2));
+                    attroff(COLOR_PAIR(3));
+                    if (temp)
+                        temp = temp->right;
+                }
+            }
+            if (i > 0 && i < size + 1)
+            {
+                rowStart = rowStart->down;
+            }
+        }
+        refresh();
+    }
+    
 };

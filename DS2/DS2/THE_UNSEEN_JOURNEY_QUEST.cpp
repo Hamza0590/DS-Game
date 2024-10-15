@@ -12,7 +12,7 @@ using namespace std;
 
 int main() 
 {
-    int gridSize, undo = 0, level = 0 ,moves =0 , score=0 , keyX = 0, keyY = 0, getKey = 0 , doorX, doorY ,
+    int gridSize, undo = 0, level = 0 ,moves =0 , keyX = 0, keyY = 0, getKey = 0 , doorX, doorY ,
         leftCheck = 1, rightCheck = 1, upCheck = 1, downCheck = 1 , coinInterval = 10, previous;
     char levelName;
     cout << "Select Difficulty Level:\n1- Easy\n2- Medium\n3- Hard\nSelect: ";
@@ -44,50 +44,60 @@ int main()
         moves = 0;
         levelName = 'H';
     }
-    int playerX = rand() % gridSize, playerY = rand() % gridSize;
-    int playerPreX = playerX, playerPreY = playerY;
+    l1.makeGrid(gridSize , levelName);
+    player p1(l1 ,undo);
+    int playerX = p1.getPlayerX(), playerY = p1.getPlayerY();
+    int playerPreX = playerX, playerPreY = playerY , initialPlayerX = playerX , initialPlayerY = playerY;
     do
     {
-        keyX = rand() & gridSize, keyY = rand() % gridSize;
+        keyX = rand() % gridSize, keyY = rand() % gridSize;
     } while (keyX == playerX && keyY == playerY);
     do
     {
-        doorX = rand() & gridSize, doorY = rand() % gridSize;
+        doorX = rand() % gridSize, doorY = rand() % gridSize;
     } while ((doorX == playerX && doorY == playerY) && (doorX==keyX && doorY==keyY));
-
-
-    l1.makeGrid(gridSize);
-    player p1(l1 , playerX , playerY , undo);
-    l1.Key(keyX , keyY , 'K');
-    l1.door(doorX, doorY, 'D');
+    l1.setDoorCor(doorX, doorY);
+    l1.setKeyCor(keyX, keyY);
+    l1.updateTile(keyX , keyY , 'K');
+    l1.updateTile(doorX, doorY, 'D');
     list coins , savedCoins , bombs;
-    l1.drawCoins(playerX, playerY, keyX, keyY, doorX , doorY , level, coins);
-    l1.drawBomb(playerX, playerY, keyX, keyY, doorX, keyY, level, coins, bombs);
+    l1.drawCoins(playerX, playerY , level, coins);
+    list initialCoins;
+    l1.drawBomb(playerX, playerY,level, coins, bombs);
     moves += p1.getMoves(playerX, playerY, doorX, doorY , keyX, keyY);
-    l1.printGrid(levelName , moves , undo , score , 3 , getKey,0 ,0);
+    l1.printGrid( moves , undo , p1.getScore(), 3, getKey, 0, 0);
     delNode d1;
     stackList undoStack;
-    
+    int a;
     auto lastUpdate = std::chrono::steady_clock::now();
     p1.getHint(playerX, playerY, keyX, keyY, doorX, doorY, getKey, previous);
     while (true)
     {
-        moves -= 1;
-        int a = getch();
-        l1.door(doorX, doorY, 'D');
+        playerX = p1.getPlayerX(), playerY = p1.getPlayerY();
+        a = getch();
+        l1.updateTile(doorX, doorY, 'D');
         auto now = std::chrono::steady_clock::now();
         if (chrono::duration_cast<chrono::seconds>(now - lastUpdate).count() >= coinInterval) 
         {
-
+            if (initialCoins.isEmpty())
+            {
+                initialCoins = coins;
+            }
             d1.deleteNodes(l1 , coins);
-            l1.drawCoins(playerX, playerY, keyX, keyY, doorX, doorY , level , coins);
+            l1.drawCoins(playerX, playerY,level , coins);
             lastUpdate = now;
+        }
+        if (a == 27)
+        {
+            break;
         }
         if (a == KEY_UP && upCheck)
         {
+            
             downCheck = 0;
             if (playerX>0)
             {
+                moves -= 1;
                 upCheck = 1;
                 rightCheck = 1;
                 leftCheck = 1;
@@ -97,14 +107,15 @@ int main()
                 l1.updateTile(playerX , playerY, 'P');
                 playerPreX = playerX;
                 int awayorClose = p1.getHint(playerX, playerY, keyX, keyY, doorX, doorY, getKey, previous);
-                l1.printGrid(levelName , moves , undo , score , awayorClose , getKey , 0 , 0);
+                l1.printGrid( moves , undo , p1.getScore(), awayorClose, getKey, 0, 0);
             }
         }
         else if (a == KEY_DOWN && downCheck)
-        {
+        {    
             upCheck = 0;
             if (playerX < gridSize-1)
             {
+                moves -= 1;
                 downCheck = 1;
                 rightCheck = 1;
                 leftCheck = 1;
@@ -114,7 +125,7 @@ int main()
                 l1.updateTile(playerX , playerY , 'P');
                 playerPreX = playerX;
                 int awayorClose = p1.getHint(playerX, playerY, keyX, keyY, doorX, doorY, getKey, previous);
-                l1.printGrid(levelName , moves , undo, score , awayorClose , getKey, 0 , 0);
+                l1.printGrid( moves , undo, p1.getScore(), awayorClose, getKey, 0, 0);
             }
         }
         else if (a == KEY_LEFT && leftCheck)
@@ -122,6 +133,7 @@ int main()
             rightCheck = 0;
             if (playerY > 0)
             {
+                moves -= 1;
                 upCheck = 1;
                 downCheck = 1;
                 leftCheck = 1;
@@ -131,14 +143,16 @@ int main()
                 l1.updateTile(playerX, playerY, 'P');
                 playerPreY = playerY;
                 int awayorClose = p1.getHint(playerX, playerY, keyX, keyY, doorX, doorY, getKey, previous);
-                l1.printGrid(levelName , moves , undo , score , awayorClose , getKey , 0 , 0);
+                l1.printGrid( moves , undo , p1.getScore() , awayorClose , getKey , 0 , 0);
             }
         }
         else if (a == KEY_RIGHT && rightCheck)
         {
+           
             leftCheck = 0;
             if (playerY < gridSize-1)
             {
+                moves -= 1;
                 upCheck = 1;
                 downCheck = 1;
                 rightCheck = 1;
@@ -149,7 +163,7 @@ int main()
                 playerPreY = playerY;
                 
                 int awayorClose = p1.getHint(playerX, playerY, keyX, keyY, doorX, doorY, getKey, previous);
-                l1.printGrid(levelName , moves , undo , score , awayorClose , getKey , 0 , 0);
+                l1.printGrid( moves , undo , p1.getScore(), awayorClose, getKey, 0, 0);
             }
         }
         else if ((a == 'U' || a == 'u') && undo>0)
@@ -162,35 +176,48 @@ int main()
                 p1.setPlayer(stackX, stackY, playerX, playerY, l1);
                 playerX = playerPreX = stackX;
                 playerY = playerPreY = stackY;
-                cout << playerX << playerY;
                 undoStack.pop();
                 int awayorClose = p1.getHint(playerX, playerY, keyX, keyY, doorX, doorY, getKey, previous);
                 undo -= 1;
-                l1.printGrid(levelName, moves, undo, score, awayorClose, getKey, playerX, playerY);
+                l1.printGrid( moves, undo, p1.getScore(), awayorClose, getKey, playerX, playerY);
             }
         }
+        p1.setPlayerX(playerX), p1.setPlayerY(playerY);
         if (p1.checkKey(playerX, playerY, keyX, keyY))
         {
-            l1.Key(keyX, keyY, '.');
-            keyX = keyY = 0;
+            l1.updateTile(keyX, keyY, '.');
             getKey = 1;
         }
-        if (p1.checkdoor(playerX, playerY, doorX, doorY, getKey))
+        if (p1.checkdoor( doorX, doorY, getKey) || (moves <= 0) || p1.checkBomb( bombs))
         {
-            break;
-        }
-        if (p1.checkCoin(playerX, playerY, coins, savedCoins))
-        {
-            undo += 1;
-            score += 2;
-        }
-        if ((moves <= 0) ||p1.checkBomb(playerX, playerY, bombs))
-        {
+            if (moves)
+            {
+                p1.setScore(moves);
+            }   
+            if (moves <= 0)
+            {
+                l1.updateTile(playerX, playerY, '.');
+            }
+            else if (p1.checkBomb( bombs))
+            {
+                l1.updateTile(playerX, playerY, 'B');
+            }
+            l1.printEndDisplay( initialPlayerX , initialPlayerY, p1.getPlayerX(), p1.getPlayerY() , p1.getScore(), coins, initialCoins, savedCoins);
             break;
         }
         
+        if (p1.checkCoin(playerX, playerY, coins, savedCoins))
+        {
+            undo += 1;
+            p1.setScore(2);
+        }
     }
-    savedCoins.print();
+    while (1)
+    {
+        a = getch();
+        if (a)
+            break;
+    }
     endwin();
     return 0;
 }

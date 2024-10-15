@@ -12,6 +12,14 @@ public:
         y = 0;
         next = NULL;
     }
+    int getX()
+    {
+        return x;
+    }
+    int getY()
+    {
+        return y;
+    }
 };
 class list
 {
@@ -50,6 +58,23 @@ public:
             cout << '(' << temp->x << ',' << temp->y << ')';
             temp = temp->next;
         } while (temp != NULL);
+    }
+    int isEmpty()
+    {
+        if (head == NULL)
+            return 1;
+        else
+            return 0;
+    }
+    list& operator = (list& temp)
+    {
+        node* traverse = temp.head;
+        while (traverse != NULL)
+        {
+            insetAtEnd(traverse->x, traverse->y);
+            traverse = traverse->next;
+        }
+        return *this;
     }
 
 };

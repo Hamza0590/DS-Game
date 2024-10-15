@@ -3,21 +3,36 @@
 #include"multi_Dim_list.h"
 class player
 {
-    int undoMoves;
+    int undoMoves , playerX , playerY , initialX , initialY , score;
 public:
-    player(gridlist l1, int x, int y, int undo)
+    player(gridlist l1,  int undo)
     {
         undoMoves = undo;
+        score = 0;
         gridnode* temp = l1.head;
-        for (int i = 0; i < x; i++)
+        
+        playerX = rand() % l1.size;
+        initialX = playerX;
+        playerY = rand() % l1.size;
+        initialY = playerY;
+        for (int i = 0; i < playerX; i++)
         {
             temp = temp->down;
         }
-        for (int j = 0; j < y; j++)
+        for (int j = 0; j < playerY; j++)
         {
             temp = temp->right;
         }
         temp->tile = 'P';
+        
+    }
+    int getScore()
+    {
+        return score;
+    }
+    void setScore(int val)
+    {
+        score += val;
     }
     void setPlayer(int x, int y , int currX , int currY , gridlist &l1)
     {
@@ -49,7 +64,7 @@ public:
         else
             return 0;
     }
-    int checkdoor(int playerX, int playerY, int doorX, int doorY, int check)
+    int checkdoor( int doorX, int doorY, int check)
     {
         if ((playerX == doorX && playerY == doorY) && (check))
             return 1;
@@ -161,7 +176,7 @@ public:
             return 0;
         }
     }
-    int checkBomb(int playerX, int playerY, list& bombs)
+    int checkBomb( list& bombs)
     {
         node* temp = bombs.head;
         while (temp != NULL)
@@ -173,5 +188,29 @@ public:
             temp = temp->next;
         }
         return 0;
+    }
+    int getPlayerX()
+    {
+        return playerX;
+    }
+    int getPlayerY()
+    {
+        return playerY;
+    }
+    int getInitialPlayerX()
+    {
+        return initialX;
+    }
+    int getInitialPlayerY()
+    {
+        return initialY;
+    }
+    void setPlayerX(const int &val)
+    {
+        playerX = val;
+    }
+    void setPlayerY(const int &val)
+    {
+        playerY = val;
     }
 };
