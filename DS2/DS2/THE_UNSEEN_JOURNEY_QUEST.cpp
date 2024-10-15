@@ -60,10 +60,11 @@ int main()
     l1.setKeyCor(keyX, keyY);
     l1.updateTile(keyX , keyY , 'K');
     l1.updateTile(doorX, doorY, 'D');
-    list coins , savedCoins , bombs;
-    l1.drawCoins(playerX, playerY , level, coins);
+    list savedCoins;
+    l1.drawCoins(playerX, playerY , level);
     list initialCoins;
-    l1.drawBomb(playerX, playerY,level, coins, bombs);
+    initialCoins = l1.getCoins();
+    l1.drawBomb(playerX, playerY,level);
     moves += p1.getMoves(playerX, playerY, doorX, doorY , keyX, keyY);
     l1.printGrid( moves , undo , p1.getScore(), 3, getKey, 0, 0);
     delNode d1;
@@ -79,12 +80,15 @@ int main()
         auto now = std::chrono::steady_clock::now();
         if (chrono::duration_cast<chrono::seconds>(now - lastUpdate).count() >= coinInterval) 
         {
-            if (initialCoins.isEmpty())
+            /*if (initialCoins.isEmpty())
             {
-                initialCoins = coins;
-            }
-            d1.deleteNodes(l1 , coins);
-            l1.drawCoins(playerX, playerY,level , coins);
+                initialCoins = l1.getCoins();
+            };
+            cout << "INitial Coins: ";
+            initialCoins.print();
+            cout << endl;*/
+            l1.delCoins();
+            l1.drawCoins(playerX, playerY,level);
             lastUpdate = now;
         }
         if (a == 27)
@@ -188,7 +192,7 @@ int main()
             l1.updateTile(keyX, keyY, '.');
             getKey = 1;
         }
-        if (p1.checkdoor( doorX, doorY, getKey) || (moves <= 0) || p1.checkBomb( bombs))
+        if (p1.checkdoor( doorX, doorY, getKey) || (moves <= 0) || p1.checkBomb( l1.getBomb()))
         {
             if (moves)
             {
@@ -198,15 +202,15 @@ int main()
             {
                 l1.updateTile(playerX, playerY, '.');
             }
-            else if (p1.checkBomb( bombs))
+            else if (p1.checkBomb( l1.getBomb()))
             {
                 l1.updateTile(playerX, playerY, 'B');
             }
-            l1.printEndDisplay( initialPlayerX , initialPlayerY, p1.getPlayerX(), p1.getPlayerY() , p1.getScore(), coins, initialCoins, savedCoins);
+            l1.printEndDisplay( initialPlayerX , initialPlayerY, p1.getPlayerX(), p1.getPlayerY() , p1.getScore(), initialCoins, savedCoins);
             break;
         }
         
-        if (p1.checkCoin(playerX, playerY, coins, savedCoins))
+        if (p1.checkCoin(playerX, playerY, l1.getCoins(), savedCoins))
         {
             undo += 1;
             p1.setScore(2);

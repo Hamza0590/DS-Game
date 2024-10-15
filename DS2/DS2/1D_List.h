@@ -66,9 +66,8 @@ public:
         else
             return 0;
     }
-    list& operator = (list& temp)
+    list& operator = (node* traverse)
     {
-        node* traverse = temp.head;
         while (traverse != NULL)
         {
             insetAtEnd(traverse->x, traverse->y);

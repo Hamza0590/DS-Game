@@ -23,6 +23,7 @@ public:
     gridnode* head, * curr;
     int size , doorX , doorY , keyX , keyY;
     char level;
+    list coins, bomb;
     gridlist() {
         head = curr = NULL;
         size = doorX = doorY = keyX = keyY =0;
@@ -135,7 +136,7 @@ public:
         keyX = x;
         keyY = y;
     }
-    void drawCoins(int pX, int pY,  int level , list& coins)
+    void drawCoins(int pX, int pY,  int level)
     {
         int coinX, coinY  , n;
         if (level == 1)
@@ -163,7 +164,7 @@ public:
             temp->tile = 'C';
         }
     }
-    void drawBomb(int pX, int pY, int level, list& coins, list& bomb)
+    void drawBomb(int pX, int pY, int level)
     {
         int bombX, bombY, n = 0, check;
         if (level == 1)
@@ -270,7 +271,7 @@ public:
         }
         refresh();
     }
-    void printEndDisplay(int playerInitialX, int playerInitialY, int pX, int pY,  int score, list recentCoins, list initialCoins, list  savedCoins)
+    void printEndDisplay(int playerInitialX, int playerInitialY, int pX, int pY,  int score, list initialCoins, list  savedCoins)
     {
 
         clear();
@@ -304,23 +305,22 @@ public:
         updateTile(playerInitialX, playerInitialY, 'P');
         updateTile(doorX, doorY, 'D');
         updateTile(keyX, keyY, 'K');
-        node* temp = recentCoins.head;
+        node* temp = coins.head;
         node* coinNode = initialCoins.head;
         
-        while (coinNode != NULL)
-        {
-                updateTile(coinNode->getX(), coinNode->getY(), 'C');
-                coinNode = coinNode->next;
-        }
-        coinNode = initialCoins.head;
-        if (coinNode != NULL)
-        {
             while (temp != NULL)
             {
                 updateTile(temp->getX(), temp->getY(), '.');
                 temp = temp->next;
             }
+        coinNode = initialCoins.head;
+        while (coinNode != NULL)
+        {
+                updateTile(coinNode->getX(), coinNode->getY(), 'C');
+                coinNode = coinNode->next;
         }
+       
+        
         gridnode* rowStart = head;
         for (int i = 0; i <= size + 1; i++)
         {
@@ -362,6 +362,36 @@ public:
             }
         }
         refresh();
+    }
+    node* getCoins()
+    {
+        return coins.head;
+    }
+    node* getBomb()
+    {
+        return bomb.head;
+    }
+    void delCoins()
+    {
+        node* temp = coins.head;
+        while (temp != NULL)
+        {
+            node* curr = temp;
+            gridnode* traverseforDeletion = head;
+            for (int i = 1; i <= curr->x; i++)
+            {
+                traverseforDeletion = traverseforDeletion->down;
+            }
+            for (int j = 1; j <= curr->y; j++)
+            {
+                traverseforDeletion = traverseforDeletion->right;
+            }
+            traverseforDeletion->tile = '.';
+            temp = temp->next;
+            delete curr;
+            curr = NULL;
+        }
+        coins.head = NULL;
     }
     
 };

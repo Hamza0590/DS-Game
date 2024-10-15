@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\DS-Game\\DS2\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|D:\\DS-Game\\DS2\\DS2\\multi_Dim_list.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|solutionrelative:DS2\\multi_Dim_list.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|D:\\DS-Game\\DS2\\DS2\\THE_UNSEEN_JOURNEY_QUEST.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|solutionrelative:DS2\\THE_UNSEEN_JOURNEY_QUEST.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -11,20 +15,12 @@
       "RelativeMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|solutionrelative:DS2\\1D_List.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|D:\\DS-Game\\DS2\\DS2\\player.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|solutionrelative:DS2\\player.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|D:\\DS-Game\\DS2\\DS2\\multi_Dim_list.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|solutionrelative:DS2\\multi_Dim_list.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|D:\\DS-Game\\DS2\\DS2\\delNodes.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|solutionrelative:DS2\\delNodes.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|D:\\DS-Game\\DS2\\DS2\\UndoStack.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|solutionrelative:DS2\\UndoStack.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|D:\\DS-Game\\DS2\\DS2\\player.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5944FD6C-D603-4602-B84D-1CB36ADBA3BF}|DS2\\DS2.vcxproj|solutionrelative:DS2\\player.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,11 +30,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "UndoStack.h",
               "DocumentMoniker": "D:\\DS-Game\\DS2\\DS2\\UndoStack.h",
               "RelativeDocumentMoniker": "DS2\\UndoStack.h",
@@ -51,65 +47,52 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "player.h",
               "DocumentMoniker": "D:\\DS-Game\\DS2\\DS2\\player.h",
               "RelativeDocumentMoniker": "DS2\\player.h",
               "ToolTip": "D:\\DS-Game\\DS2\\DS2\\player.h",
               "RelativeToolTip": "DS2\\player.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAZAAAA",
+              "ViewState": "AQIAADYAAAAAAAAAAAAAAEsAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-10-08T06:46:12.23Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "delNodes.h",
-              "DocumentMoniker": "D:\\DS-Game\\DS2\\DS2\\delNodes.h",
-              "RelativeDocumentMoniker": "DS2\\delNodes.h",
-              "ToolTip": "D:\\DS-Game\\DS2\\DS2\\delNodes.h",
-              "RelativeToolTip": "DS2\\delNodes.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-08T17:31:45.316Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "multi_Dim_list.h",
               "DocumentMoniker": "D:\\DS-Game\\DS2\\DS2\\multi_Dim_list.h",
               "RelativeDocumentMoniker": "DS2\\multi_Dim_list.h",
               "ToolTip": "D:\\DS-Game\\DS2\\DS2\\multi_Dim_list.h",
               "RelativeToolTip": "DS2\\multi_Dim_list.h",
-              "ViewState": "AQIAAAIBAAAAAAAAAAAqwDoBAAAlAAAA",
+              "ViewState": "AQIAACMBAAAAAAAAAAAUwDUBAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-10-07T15:27:10.389Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "1D_List.h",
               "DocumentMoniker": "D:\\DS-Game\\DS2\\DS2\\1D_List.h",
               "RelativeDocumentMoniker": "DS2\\1D_List.h",
               "ToolTip": "D:\\DS-Game\\DS2\\DS2\\1D_List.h",
               "RelativeToolTip": "DS2\\1D_List.h",
-              "ViewState": "AQIAAAQAAAAAAAAAAAAqwBEAAAAAAAAA",
+              "ViewState": "AQIAACsAAAAAAAAAAAAqwEwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-10-07T15:31:53.208Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "THE_UNSEEN_JOURNEY_QUEST.cpp",
               "DocumentMoniker": "D:\\DS-Game\\DS2\\DS2\\THE_UNSEEN_JOURNEY_QUEST.cpp",
               "RelativeDocumentMoniker": "DS2\\THE_UNSEEN_JOURNEY_QUEST.cpp",
               "ToolTip": "D:\\DS-Game\\DS2\\DS2\\THE_UNSEEN_JOURNEY_QUEST.cpp",
               "RelativeToolTip": "DS2\\THE_UNSEEN_JOURNEY_QUEST.cpp",
-              "ViewState": "AQIAAEIAAAAAAAAAAAAAAFMAAAAlAAAA",
+              "ViewState": "AQIAAEIAAAAAAAAAAAAAAGoAAAAeAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-07T09:20:08.927Z",
               "EditorCaption": ""

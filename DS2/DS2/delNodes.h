@@ -4,10 +4,8 @@
 class delNode
 {
 public:
-    void deleteNodes(gridlist& l1, list& coin)
+    void deleteNodes(gridlist& l1, node*  temp)
     {
-        node* temp;
-        temp = coin.head;
         while (temp != NULL)
         {
             node* curr = temp;
@@ -23,7 +21,7 @@ public:
             traverseforDeletion->tile = '.';
             temp = temp->next;
             delete curr;
+            curr = NULL;
         }
-        coin.head = NULL;
     }
 };

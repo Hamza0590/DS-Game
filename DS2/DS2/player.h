@@ -71,9 +71,9 @@ public:
         else
             return 0;
     }
-    int checkCoin(int playerX, int playerY, list& coins, list& saved)
+    int checkCoin(int playerX, int playerY, node* coins, list& saved)
     {
-        node* temp = coins.head;
+        node* temp = coins;
         while (temp != NULL)
         {
             int x = temp->x;
@@ -176,9 +176,8 @@ public:
             return 0;
         }
     }
-    int checkBomb( list& bombs)
+    int checkBomb( node* temp)
     {
-        node* temp = bombs.head;
         while (temp != NULL)
         {
             if (temp->x == playerX && temp->y == playerY)
