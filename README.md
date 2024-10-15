@@ -26,7 +26,7 @@
 
 ## Gameplay Features
 - **Hint System**: A hint displayed at the top of the grid indicates if you are moving closer or farther from the key or door.
-- **Bombs**: Stepping on a bomb ends the game, and available moves are reduced. 
+- **Bombs**: Stepping on a bomb ends the game. 
 - **Coins**: Coins increase your score and provide additional undo opportunities.
 - **Timed Coin Generation**: Coins regenerate every 10 seconds on the grid, adding a dynamic challenge to the gameplay.
 
