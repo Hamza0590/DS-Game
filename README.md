@@ -55,5 +55,5 @@ There are no known issues or bugs at this time.
 No planned updates for now.
 
 ## Credits
-- Project developed by [Your Name].
+- Project developed by **Muhammad Hamza**.
 - Special thanks to my TA for collaboration.
