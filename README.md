@@ -57,5 +57,8 @@ No planned updates for now.
 ## Credits
 - Project developed by **Muhammad Hamza**.
 - Special thanks to my TA for collaboration.
-- ![Game Screenshot](https://github.com/Hamza0590/DS-Game/blob/main/DS2/Screenshot%202024-10-20%20230531.png?raw=true)
+![Game Screenshot 1](https://github.com/Hamza0590/DS-Game/blob/main/DS2/Screenshot%202024-10-20%20230531.png?raw=true)
+
+![Game Screenshot 2](https://github.com/Hamza0590/DS-Game/blob/main/DS2/Screenshot%202024-10-20%20231140.png?raw=true)
+
 
